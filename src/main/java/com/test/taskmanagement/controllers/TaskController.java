@@ -1,13 +1,16 @@
 package com.test.taskmanagement.controllers;
 
 import com.test.taskmanagement.dtos.TaskDto;
+import com.test.taskmanagement.dtos.requests.SearchTaskRequest;
 import com.test.taskmanagement.dtos.requests.TaskRequest;
+import com.test.taskmanagement.dtos.requests.TaskRequestWithoutSubTasks;
 import com.test.taskmanagement.services.TaskService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,19 +29,19 @@ public class TaskController {
 
     TaskService taskService;
 
-    @PostMapping("/")
+    @PostMapping
     @Operation(summary = "Create task")
     @ApiResponse(responseCode = "201")
-    public Mono<TaskDto> createTask(@RequestBody TaskRequest taskRequest) {
-        return taskService.createTask(taskRequest);
+    public Mono<TaskDto> createTask(@RequestBody TaskRequestWithoutSubTasks taskRequestWithoutSubTasks) {
+        return taskService.createTask(taskRequestWithoutSubTasks);
     }
 
     @PutMapping("/{taskId}")
     @Operation(summary = "Update task by taskId")
     @ApiResponse(responseCode = "200")
     public Mono<TaskDto> updateTask(@PathVariable Long taskId,
-                                    @RequestBody TaskRequest taskRequest) {
-        return taskService.updateTask(taskId, taskRequest);
+                                    @RequestBody TaskRequestWithoutSubTasks taskRequestWithoutSubTasks) {
+        return taskService.updateTask(taskId, taskRequestWithoutSubTasks);
     }
 
     @GetMapping("/{taskId}")
@@ -53,6 +56,21 @@ public class TaskController {
     @ApiResponse(responseCode = "204")
     public Mono<Void> deleteTask(@PathVariable Long taskId) {
         return taskService.deleteTask(taskId);
+    }
+
+    @PostMapping("/{taskId}")
+    @Operation(summary = "Add dependencies sub tasks")
+    @ApiResponse(responseCode = "201")
+    public Mono<TaskDto> addDependenciesSubTasks(@PathVariable Long taskId,
+                                                 @RequestBody TaskRequest taskRequest) {
+        return taskService.addDependenciesSubTasksForTask(taskId, taskRequest);
+    }
+
+    @PostMapping("/employees/search")
+    @Operation(summary = "Task search")
+    @ApiResponse(responseCode = "200")
+    public Mono<Page<TaskDto>> taskSearch(@RequestBody SearchTaskRequest searchTaskRequest) {
+        return taskService.taskSearch(searchTaskRequest);
     }
 
 }

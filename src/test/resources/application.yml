@@ -1,0 +1,44 @@
+server:
+  port: 8080
+  error:
+    include-message: always
+
+server-url: http://localhost:8080
+server-route:
+
+database:
+  host: localhost
+  port: 5432
+  username: task_test
+  password: task_test
+  database: task_management_test
+  schema: public
+  pool:
+    maxIdleTimeInMinutes: 5
+    maxSize: 30
+
+spring:
+  jackson:
+    date-format: yyyy-MM-dd'T'HH:mm:ss.SSS'Z'
+  jpa:
+    properties:
+    hibernate:
+      jdbc:
+        time_zone: UTC
+  flyway:
+    enabled: true
+    url: jdbc:postgresql://${database.host}:${database.port}/${database.database}
+    password: ${database.password}
+    user: ${database.username}
+    schemas: ${database.schema}
+    out-of-order: true
+
+springdoc:
+  api-docs:
+    enabled: true
+    path: /task-management/doc/api-docs
+  swagger-ui:
+    enabled: true
+    path: /task-management/doc/swagger-ui.html
+    operationsSorter: alpha
+

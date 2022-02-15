@@ -9,6 +9,7 @@ import java.util.List;
 @Data
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class TaskRequest {
+    Long id;
     String name;
     String description;
     String groupName;

@@ -21,5 +21,5 @@ public class ExecutorDto {
     Long id;
     String firstName;
     String lastName;
-    List<Task> taskList;
+    List<TaskDto> taskList;
 }

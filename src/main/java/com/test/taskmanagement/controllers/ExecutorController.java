@@ -2,6 +2,7 @@ package com.test.taskmanagement.controllers;
 
 import com.test.taskmanagement.dtos.ExecutorDto;
 import com.test.taskmanagement.dtos.requests.ExecutorRequest;
+import com.test.taskmanagement.dtos.requests.ExecutorRequestWithoutTasks;
 import com.test.taskmanagement.services.ExecutorService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -26,19 +27,19 @@ public class ExecutorController {
 
     ExecutorService executorService;
 
-    @PostMapping("/")
+    @PostMapping
     @Operation(summary = "Create executor")
     @ApiResponse(responseCode = "201")
-    public Mono<ExecutorDto> createExecutor(@RequestBody ExecutorRequest executorRequest) {
-        return executorService.createExecutor(executorRequest);
+    public Mono<ExecutorDto> createExecutor(@RequestBody ExecutorRequestWithoutTasks executorRequestWithoutTasks) {
+        return executorService.createExecutor(executorRequestWithoutTasks);
     }
 
     @PutMapping("/{executorId}")
     @Operation(summary = "Update executor by executorId")
     @ApiResponse(responseCode = "200")
     public Mono<ExecutorDto> updateExecutor(@PathVariable Long executorId,
-                                            @RequestBody ExecutorRequest executorRequest) {
-        return executorService.updateExecutor(executorId, executorRequest);
+                                            @RequestBody ExecutorRequestWithoutTasks executorRequestWithoutTasks) {
+        return executorService.updateExecutor(executorId, executorRequestWithoutTasks);
     }
 
     @GetMapping("/{executorId}")
@@ -53,6 +54,14 @@ public class ExecutorController {
     @ApiResponse(responseCode = "204")
     public Mono<Void> deleteExecutor(@PathVariable Long executorId) {
         return executorService.deleteExecutor(executorId);
+    }
+
+    @PostMapping("/{executorId}")
+    @Operation(summary = "Add dependencies tasks for executor")
+    @ApiResponse(responseCode = "201")
+    public Mono<ExecutorDto> addDependenciesTasksForExecutor(@PathVariable Long executorId,
+                                                             @RequestBody ExecutorRequest executorRequest) {
+        return executorService.addDependenciesTasksForExecutor(executorId, executorRequest);
     }
 
 }

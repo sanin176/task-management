@@ -1,15 +1,14 @@
 package com.test.taskmanagement.dtos.requests;
 
+import com.test.taskmanagement.db.models.RequestTaskFilter;
 import lombok.AccessLevel;
-import lombok.Builder;
 import lombok.Data;
 import lombok.experimental.FieldDefaults;
 
 @Data
-@Builder(toBuilder = true)
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class SubTaskRequest {
-    Long id;
-    String name;
-    String description;
+public class SearchTaskRequest {
+    Integer pageNumber;
+    Integer pageSize;
+    RequestTaskFilter filters;
 }

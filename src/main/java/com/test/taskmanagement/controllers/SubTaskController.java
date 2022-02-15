@@ -26,7 +26,7 @@ public class SubTaskController {
 
     SubTaskService subTaskService;
 
-    @PostMapping("/")
+    @PostMapping
     @Operation(summary = "Create sub task")
     @ApiResponse(responseCode = "201")
     public Mono<SubTaskDto> createSubTask(@RequestBody SubTaskRequest subTaskRequest) {

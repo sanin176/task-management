@@ -21,6 +21,11 @@ repositories {
 ext {
 	set('openapi_webflux_ui', "1.4.3")
 	set('mapstruct', "1.4.2.Final")
+	set('reactor_extra', "3.4.6")
+	set('testcontainers', "1.15.2")
+	set('flyway_test', "7.0.0")
+	set('assertj_core', "3.17.2")
+	set('testcontainersVersion', "1.15.3")
 }
 
 dependencies {
@@ -38,8 +43,39 @@ dependencies {
 
 	implementation "org.mapstruct:mapstruct:${mapstruct}"
 	annotationProcessor "org.mapstruct:mapstruct-processor:${mapstruct}"
+
+	implementation "io.projectreactor.addons:reactor-extra:${reactor_extra}"
+
+	testImplementation 'org.testcontainers:junit-jupiter'
+	testImplementation 'org.testcontainers:postgresql'
+	testImplementation 'org.testcontainers:r2dbc'
+
+	testCompileOnly 'org.projectlombok:lombok'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testImplementation 'io.projectreactor:reactor-test'
+	testImplementation 'org.springframework.security:spring-security-test'
+	testImplementation 'org.projectlombok:lombok'
+	testAnnotationProcessor 'org.projectlombok:lombok'
+	testImplementation "org.testcontainers:testcontainers:${testcontainers}"
+	testImplementation 'io.projectreactor:reactor-test'
+	testImplementation "org.flywaydb.flyway-test-extensions:flyway-spring-test:${flyway_test}"
+	testImplementation "org.testcontainers:r2dbc:${testcontainers}"
+	testImplementation "org.testcontainers:postgresql:${testcontainers}"
+	testImplementation "org.testcontainers:testcontainers:${testcontainers}"
+	testImplementation "org.assertj:assertj-core:${assertj_core}"
+	testImplementation 'org.junit.jupiter:junit-jupiter-engine'
+	testImplementation('org.springframework.boot:spring-boot-starter-test') {
+		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+		exclude group: 'junit', module: 'junit'
+	}
 }
 
-tasks.named('test') {
+dependencyManagement {
+	imports {
+		mavenBom "org.testcontainers:testcontainers-bom:${testcontainersVersion}"
+	}
+}
+
+test {
 	useJUnitPlatform()
 }
