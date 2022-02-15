@@ -1,0 +1,12 @@
+version: "3"
+
+services:
+  task-management-db:
+    image: postgres:latest
+    container_name: task_management_db
+    environment:
+      - POSTGRES_USER=task
+      - POSTGRES_PASSWORD=task
+      - POSTGRES_DB=task_management
+    ports:
+      - 5432:5432
